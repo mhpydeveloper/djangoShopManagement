@@ -1,0 +1,51 @@
+
+{% extends 'base.html' %}
+{% load static %}
+
+{% block extra_headers %}
+<link rel="stylesheet" href="{% static 'home/css/style.css' %}">
+<!-- Load Bootstrap CDN -->
+<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+<script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+{% endblock %}
+
+{% block content %}
+    <!-- Create a container for the form and the products -->
+    <div class="container">
+        <!-- Create a row for the form -->
+        <div class="row">
+            <!-- Create a column for the form -->
+            <div class="col-md-12">
+                <form action="" method="get" class="form-inline">
+                    {% csrf_token %}
+                    {{ form2.as_p }}
+                    <input type="submit" value="search" class="btn btn-primary">
+                </form>
+            </div>
+        </div>
+        <!-- Create a row for the products -->
+        <div class="row">
+            {% for product in products %}
+            <!-- Create a column for each product -->
+            <div class="col-md-3">
+                <!-- Create a card for each product -->
+                <div class="card mb-3">
+                    <!-- Create a card body for each product -->
+                    <div class="card-body">
+                        <h2>{{ product.id }} - {{ product.name }}</h2>
+                        <small>{{ product.available }}</small><br/>
+                        <p>{{ product.price }} Toman</p>
+                        <p>{{ product.description|safe }}</p><br/><br/>
+                        <form action="{% url 'cash:cart_add' product.id %}" method="post">
+                            {% csrf_token %}
+                            {{ form1 }}
+                            <input type="submit" value="add to cart" class="btn btn-success">
+                        </form>
+                    </div>
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+    </div>
+{% endblock %}

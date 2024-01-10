@@ -1,0 +1,83 @@
+
+
+{% extends 'base.html' %}
+
+{% block content %}
+
+<!-- adding Bootstrap CDN link -->
+<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+<!-- adding jQuery CDN link -->
+<script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
+<!-- adding Bootstrap CDN script -->
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+<!-- adding custom CSS style -->
+<style>
+    /* changing the color and background of the table header */
+    .table thead th {
+        color: white;
+        background-color: black;
+    }
+    /* changing the color and background of the table footer */
+    .table tfoot td {
+        color: white;
+        background-color: gray;
+    }
+    /* changing the color and background of the remove link */
+    .table a {
+        color: red;
+        background-color: transparent;
+    }
+    /* adding a hover effect to the remove link */
+    .table a:hover {
+        color: white;
+        background-color: red;
+    }
+    /* changing the appearance and behavior of the checkout button */
+    .btn {
+        color: white;
+        background-color: green;
+        border: 2px solid white;
+        padding: 10px;
+        text-decoration: none;
+    }
+    /* adding a hover effect to the checkout button */
+    .btn:hover {
+        background-color: lime;
+    }
+</style>
+
+<table class="table table-dark table-striped">
+    <thead>
+    <tr>
+        <th scope="col">#</th>
+        <th scope="col">Name</th>
+        <th scope="col">Quantity</th>
+        <th scope="col">Unit Price</th>
+        <th scope="col">Total Price</th>
+        <th scope="col">Remove</th>
+    </tr>
+    </thead>
+    <tbody>
+    {% for item in cart %}
+    <tr>
+        <th scope="row">{{ forloop.counter }}</th>
+        <td>{{ item.product }}</td>
+        <td>{{ item.quantity }}</td>
+        <td>{{ item.price }}</td>
+        <td>{{ item.total_price }}</td>
+        <td><a href="{% url 'cash:cart_remove' item.product.id %}">remove</a></td>
+    </tr>
+    {% endfor %}
+
+    <tr>
+        <td>Total</td>
+        <td colspan="4"></td>
+        <td>{{ cart.get_total_price }}</td>
+    </tr>
+
+    </tbody>
+</table>
+
+<a href="{% url 'cash:order_create' %}" class="btn">Checkout</a>
+
+{% endblock %}
